@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 3.0f;
 
     public int maxHealth = 5;
+
+    public GameObject projectilePrefab;
+
     public float timeInvincible = 2;
     public int health { get { return currentHealth; } }
     int currentHealth;
@@ -18,6 +21,8 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rigidbody2d;
     float horizontal;
     float vertical;
+    private Vector2 lookDirection;
+    private object animator;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +38,10 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
+        Vector2 move = new Vector2(horizontal, vertical);
+
+        
+
 
         if (isInvincible)
         {
@@ -43,7 +52,11 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-    
+        if ((Input.GetKeyDown(KeyCode.C)))
+        {
+            Launch();
+        }
+
         Vector2 position = rigidbody2d.position;
         position.x = position.x + speed * horizontal * Time.deltaTime;
         position.y = position.y + speed * vertical *Time.deltaTime;
@@ -63,5 +76,15 @@ public class PlayerController : MonoBehaviour
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
+    }
+
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(lookDirection, 300);
+
+        
     }
 }
