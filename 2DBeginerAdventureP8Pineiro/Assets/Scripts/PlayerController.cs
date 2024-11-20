@@ -22,13 +22,14 @@ public class PlayerController : MonoBehaviour
     float horizontal;
     float vertical;
     private Vector2 lookDirection;
-    private object animator;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        animator  = GetComponent<Animator>();
         
     }
 
@@ -85,6 +86,6 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300);
 
-        
+        animator.SetTrigger("Launch");
     }
 }
